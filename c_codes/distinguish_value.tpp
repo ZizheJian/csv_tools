@@ -15,7 +15,7 @@ bool distinguish_value(string value,double &number)
 
 bool compare_string(string str1,string str2)
 {
-    double number1,number2;
+    double number1=0,number2=0;
     bool is_number1=distinguish_value(str1,number1);
     bool is_number2=distinguish_value(str2,number2);
     if (is_number1 && !is_number2)
@@ -35,7 +35,7 @@ bool compare_vector_string(vector<string> vec1,vector<string> vec2)
         throw invalid_argument("无法比较长度不同的vec1和vec2");
     if (vec1.empty())
         throw invalid_argument("无法比较空的vec1和vec2");
-    for (int i=0;i<vec1.size();i++)
+    for (int i=0;(uint64_t)i<vec1.size();i++)
     {
         if (vec1[i]!=vec2[i])
             return compare_string(vec1[i],vec2[i]);
