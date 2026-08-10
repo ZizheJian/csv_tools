@@ -1,5 +1,5 @@
 import os,csv
-from distinguish_value import distinguish_value
+from .distinguish_value import distinguish_value
 
 def _write_csv_item_uncertain_row_info_keys(csv_path:str,row_info:list,column_name:str,value,sort_row:bool=True,
                                             sort_column:bool=True):
