@@ -1,8 +1,10 @@
 #pragma once
 
+namespace csv_tools
+{
 using namespace std;
 
-void write_csv(string csv_path,vector<vector<string>> data,int query_row_key_len,bool sort_row=true,bool sort_column=true)
+inline void write_csv(string csv_path,vector<vector<string>> data,int query_row_key_len,bool sort_row=true,bool sort_column=true)
 {
     vector<string> header=data[0];
     //////// 排序 ////////
@@ -39,4 +41,5 @@ void write_csv(string csv_path,vector<vector<string>> data,int query_row_key_len
     FILE *f=fopen(csv_path.c_str(),"w");
     fwrite(output_str.c_str(),sizeof(char),output_str.size(),f);
     fclose(f);
+}
 }

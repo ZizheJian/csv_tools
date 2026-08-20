@@ -1,8 +1,10 @@
 #pragma once
 
+namespace csv_tools
+{
 using namespace std;
 
-bool distinguish_value(string value,double &number)
+inline bool distinguish_value(string value,double &number)
 {
     if (value.empty())
         return false;
@@ -13,7 +15,7 @@ bool distinguish_value(string value,double &number)
     return true;
 }
 
-bool compare_string(string str1,string str2)
+inline bool compare_string(string str1,string str2)
 {
     double number1=0,number2=0;
     bool is_number1=distinguish_value(str1,number1);
@@ -29,7 +31,7 @@ bool compare_string(string str1,string str2)
     throw invalid_argument("无法比较"+str1+"和"+str2);
 }
 
-bool compare_vector_string(vector<string> vec1,vector<string> vec2)
+inline bool compare_vector_string(vector<string> vec1,vector<string> vec2)
 {
     if (vec1.size()!=vec2.size())
         throw invalid_argument("无法比较长度不同的vec1和vec2");
@@ -41,4 +43,5 @@ bool compare_vector_string(vector<string> vec1,vector<string> vec2)
             return compare_string(vec1[i],vec2[i]);
     }
     return false;
+}
 }

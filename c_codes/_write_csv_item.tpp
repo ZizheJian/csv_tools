@@ -1,11 +1,13 @@
 #pragma once
 
+namespace csv_tools
+{
 using namespace std;
 
-void _write_csv_item(string csv_path,vector<pair<string,string>> row_info,string column_name,string value,
+inline void _write_csv_item(string csv_path,vector<pair<string,string>> row_info,string column_name,string value,
     bool sort_row=true,bool sort_column=true);
 
-void _write_csv_item_uncertain_row_info_keys(string csv_path,vector<string> row_info,string column_name,string value,
+inline void _write_csv_item_uncertain_row_info_keys(string csv_path,vector<string> row_info,string column_name,string value,
     bool sort_row=true,bool sort_column=true)
 {
     vector<vector<string>> data=read_csv(csv_path);
@@ -19,7 +21,7 @@ void _write_csv_item_uncertain_row_info_keys(string csv_path,vector<string> row_
     _write_csv_item(csv_path,row_info_pairs,column_name,value,sort_row,sort_column);
 }
 
-void _write_csv_item(string csv_path,vector<pair<string,string>> row_info,string column_name,string value,
+inline void _write_csv_item(string csv_path,vector<pair<string,string>> row_info,string column_name,string value,
     bool sort_row,bool sort_column)
 {
     vector<vector<string>> data=read_csv(csv_path);
@@ -100,4 +102,5 @@ void _write_csv_item(string csv_path,vector<pair<string,string>> row_info,string
     data[query_row_id][query_column_id]=value;
     //////// 写出csv ////////
     write_csv(csv_path,data,query_row_key.size(),sort_row,sort_column);
+}
 }

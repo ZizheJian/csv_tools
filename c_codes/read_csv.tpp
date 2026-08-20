@@ -1,8 +1,10 @@
 #pragma once
 
+namespace csv_tools
+{
 using namespace std;
 
-vector<vector<string>> read_csv(string csv_path)
+inline vector<vector<string>> read_csv(string csv_path)
 {
     ifstream file(csv_path);
     if (!file.is_open())
@@ -24,4 +26,5 @@ vector<vector<string>> read_csv(string csv_path)
     }
     file.close();
     return data;
+}
 }

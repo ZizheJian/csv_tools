@@ -1,5 +1,7 @@
 #pragma once
 
+namespace csv_tools
+{
 using namespace std;
 
 template<typename T>
@@ -26,4 +28,5 @@ string change_string_type(T value)
         return value;
     else
         throw runtime_error("change_string_type 只能接受float,double,char*,const char*,string类型的参数");
+}
 }

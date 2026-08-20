@@ -1,5 +1,7 @@
 #pragma once
 
+namespace csv_tools
+{
 using namespace std;
 
 template<typename T> string change_string_type(T value);
@@ -59,4 +61,5 @@ void write_csv_item_4(string &csv_path,T1 row_info1,T2 row_info2,T3 row_info3,T4
     row_info_vec.push_back(change_string_type(row_info3));
     row_info_vec.push_back(change_string_type(row_info4));
     _write_csv_item_uncertain_row_info_keys(csv_path,row_info_vec,column_name,change_string_type(value),sort_row,sort_column);
+}
 }
