@@ -2,7 +2,7 @@ import os,csv
 from .distinguish_value import distinguish_value
 from ._write_csv_file import _write_csv_file
 
-def _write_csv_item_uncertain_row_info_keys(csv_path:str,row_info:list,column_name:str,value,sort_row:bool=True,sort_column:bool=True):
+def _write_csv_item_uncertain_row_info_keys(csv_path:str,row_info:list[str],column_name:str,value:str,sort_row:bool=True,sort_column:bool=True):
     if not os.path.exists(csv_path):
         raise ValueError(f"{csv_path}不存在，并且row_info没有key")
     with open(csv_path,"r",newline="",encoding="utf-8") as f:
@@ -15,7 +15,7 @@ def _write_csv_item_uncertain_row_info_keys(csv_path:str,row_info:list,column_na
     row_info={row_info_keys[column_id]:row_info[column_id] for column_id in range(len(row_info_keys))}
     _write_csv_item(csv_path,row_info,column_name,value,sort_row,sort_column)
 
-def _write_csv_item(csv_path:str,row_info:dict,column_name:str,value,sort_row:bool=True,sort_column:bool=True):
+def _write_csv_item(csv_path:str,row_info:dict[str,str],column_name:str,value:str,sort_row:bool=True,sort_column:bool=True):
     if not os.path.exists(csv_path):
         data=[]
     else:

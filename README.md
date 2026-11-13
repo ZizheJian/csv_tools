@@ -12,7 +12,7 @@
 
 ## Python
 
-When the repository is a submodule at `third_party/csv_tools`:
+Requires Python 3.10 or later. When the repository is a submodule at `third_party/csv_tools`:
 
 ```python
 from third_party.csv_tools.py_codes.write_csv_item import write_csv_item

@@ -12,7 +12,7 @@
 
 ## Python
 
-仓库以子模块形式放在`third_party/csv_tools`时：
+需要Python 3.10或更新的版本。仓库以子模块形式放在`third_party/csv_tools`时：
 
 ```python
 from third_party.csv_tools.py_codes.write_csv_item import write_csv_item

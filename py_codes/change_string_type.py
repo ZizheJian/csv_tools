@@ -1,7 +1,7 @@
 import math
 from decimal import Decimal
 
-def change_string_type(value)->str:
+def change_string_type(value:int|float|str)->str:
     if isinstance(value,float):
         if not math.isfinite(value):
             return str(value)
