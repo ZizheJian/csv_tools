@@ -1,19 +1,18 @@
 #pragma once
 
+#include <string>
+#include <sys/stat.h>
+#include <vector>
+#include "write_csv.tpp"
+
 namespace csv_tools
 {
-using namespace std;
-
-inline void _create_csv_header(string &csv_path,vector<string> header)
+// 文件已经存在时什么都不做
+inline void _create_csv_header(const std::string &csv_path,const std::vector<std::string> &header)
 {
-    FILE *f=fopen(csv_path.c_str(),"r");
-    if (f!=NULL)
-    {
-        fclose(f);
+    struct stat file_status;
+    if(stat(csv_path.c_str(),&file_status)==0)
         return;
-    }
-    vector<vector<string>> data;
-    data.push_back(header);
-    write_csv(csv_path,data,header.size(),false,false);
+    write_csv(csv_path,{header},header.size(),false,false);
 }
 }

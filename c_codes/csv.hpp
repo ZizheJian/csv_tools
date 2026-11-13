@@ -1,13 +1,5 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <fstream>
-#include <set>
-#include <sstream>
-#include <stdexcept>
-#include <cstring>
-
 #include "change_string_type.tpp"
 #include "distinguish_value.tpp"
 #include "read_csv.tpp"

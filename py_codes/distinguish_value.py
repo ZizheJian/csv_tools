@@ -8,4 +8,3 @@ def distinguish_value(value:str):
         return 0,-number
     except (InvalidOperation,ValueError):
         return 1,value
-        

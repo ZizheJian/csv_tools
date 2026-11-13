@@ -1,8 +1,8 @@
 import os,csv
 from .distinguish_value import distinguish_value
+from ._write_csv_file import _write_csv_file
 
-def _write_csv_item_uncertain_row_info_keys(csv_path:str,row_info:list,column_name:str,value,sort_row:bool=True,
-                                            sort_column:bool=True):
+def _write_csv_item_uncertain_row_info_keys(csv_path:str,row_info:list,column_name:str,value,sort_row:bool=True,sort_column:bool=True):
     if not os.path.exists(csv_path):
         raise ValueError(f"{csv_path}不存在，并且row_info没有key")
     with open(csv_path,"r",newline="",encoding="utf-8") as f:
@@ -34,7 +34,7 @@ def _write_csv_item(csv_path:str,row_info:dict,column_name:str,value,sort_row:bo
             data[row_id]+=[""]*(len(header)-len(data[row_id]))
     ######## 确认前几列的header和row_info的key相同 ########
     if len(row_info)>len(header):
-        raise ValueError(f"表头长度小于row_info长度")
+        raise ValueError("表头长度小于row_info长度")
     query_row_key=[]
     for column_id in range(len(row_info)):
         if header[column_id] not in row_info.keys():
@@ -74,6 +74,4 @@ def _write_csv_item(csv_path:str,row_info:dict,column_name:str,value,sort_row:bo
         sorted_column_ids=list(range(len(query_row_key)))+sorted_column_ids
         data=[[row[column_id] for column_id in sorted_column_ids] for row in data]
     ######## 写出csv ########
-    with open(csv_path,"w",newline="",encoding="utf-8") as f:
-        writer=csv.writer(f)
-        writer.writerows(data)
+    _write_csv_file(csv_path,data)

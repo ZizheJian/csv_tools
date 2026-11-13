@@ -1,33 +1,20 @@
 #pragma once
 
+#include <string>
+#include <vector>
+#include "_create_csv_header.tpp"
+
 namespace csv_tools
 {
-using namespace std;
-
-inline void _create_csv_header(string &csv_path,vector<string> header);
-
-inline void create_csv_header(string &csv_path,vector<string> header)
+inline void create_csv_header(const std::string &csv_path,const std::vector<std::string> &header)
 {
     _create_csv_header(csv_path,header);
 }
 
-inline void create_csv_header(string &csv_path,string header)
+// 接受任意个表头，例如create_csv_header(csv_path,"rel_eb","t")
+template<typename... Headers>
+void create_csv_header(const std::string &csv_path,const Headers &...headers)
 {
-    _create_csv_header(csv_path,{header});
-}
-
-inline void create_csv_header(string &csv_path,string header1,string header2)
-{
-    _create_csv_header(csv_path,{header1,header2});
-}
-
-inline void create_csv_header(string &csv_path,string header1,string header2,string header3)
-{
-    _create_csv_header(csv_path,{header1,header2,header3});
-}
-
-inline void create_csv_header(string &csv_path,string header1,string header2,string header3,string header4)
-{
-    _create_csv_header(csv_path,{header1,header2,header3,header4});
+    _create_csv_header(csv_path,{std::string(headers)...});
 }
 }
