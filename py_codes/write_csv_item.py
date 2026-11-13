@@ -9,7 +9,10 @@ def write_csv_item(csv_path:str,row_info:dict[str,int|float|str]|list[int|float|
         _write_csv_item(csv_path,row_info,column_name,value,sort_row,sort_column)
     elif isinstance(row_info,(list,int,float,str)):
         # 没有给出列名时，按顺序对应表头的前几列
-        row_info=[change_string_type(item) for item in row_info] if isinstance(row_info,list) else [change_string_type(row_info)]
+        if isinstance(row_info,list):
+            row_info=[change_string_type(item) for item in row_info]
+        else:
+            row_info=[change_string_type(row_info)]
         _write_csv_item_uncertain_row_info_keys(csv_path,row_info,column_name,value,sort_row,sort_column)
     else:
         raise TypeError(f"row_info只能是字典、列表、整数、小数或字符串，不能是{type(row_info).__name__}")
