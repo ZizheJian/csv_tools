@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -13,6 +14,8 @@ namespace csv_tools
 inline void _write_csv_item(const std::string &csv_path,const std::vector<std::pair<std::string,std::string>> &row_info,const std::string &column_name,const std::string &value,bool sort_row=true,bool sort_column=true)
 {
     using namespace std;
+    if(any_of(row_info.begin(),row_info.end(),[&](const pair<string,string> &info){return info.first==column_name;}))
+        throw invalid_argument("要写入的列"+column_name+"和row_info里的键重名");
     vector<vector<string>> data=read_csv(csv_path);
     if(data.empty())
     {
@@ -31,14 +34,17 @@ inline void _write_csv_item(const std::string &csv_path,const std::vector<std::p
     //////// 确认前几列的header和row_info的key相同 ////////
     if(row_info.size()>header.size())
         throw invalid_argument("表头长度小于row_info长度");
-    vector<string> query_row_key;
-    for(size_t column_id=0;column_id<row_info.size();column_id++)
+    vector<string> key_header(header.begin(),header.begin()+row_info.size()),row_info_keys;
+    for(const pair<string,string> &info:row_info)
+        row_info_keys.push_back(info.first);
+    if(set<string>(key_header.begin(),key_header.end())!=set<string>(row_info_keys.begin(),row_info_keys.end()))
     {
-        auto info=find_if(row_info.begin(),row_info.end(),[&](const pair<string,string> &info){return info.first==header[column_id];});
-        if(info==row_info.end())
-            throw invalid_argument("row_info中缺少表头"+header[column_id]+"对应的值");
-        query_row_key.push_back(info->second);
+        auto join=[](const vector<string> &names){string text;for(size_t i=0;i<names.size();i++)text+=(i?",":"")+names[i];return text;};
+        throw invalid_argument("row_info的键（"+join(row_info_keys)+"）和表头的前"+to_string(row_info.size())+"列（"+join(key_header)+"）不一致");
     }
+    vector<string> query_row_key;
+    for(const string &key:key_header)
+        query_row_key.push_back(find_if(row_info.begin(),row_info.end(),[&](const pair<string,string> &info){return info.first==key;})->second);
     //////// 寻找正确的行 ////////
     size_t query_row_id=1;
     while(query_row_id<data.size()&&!equal(query_row_key.begin(),query_row_key.end(),data[query_row_id].begin()))

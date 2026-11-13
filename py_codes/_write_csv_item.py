@@ -16,6 +16,8 @@ def _write_csv_item_uncertain_row_info_keys(csv_path:str,row_info:list[str],colu
     _write_csv_item(csv_path,row_info,column_name,value,sort_row,sort_column)
 
 def _write_csv_item(csv_path:str,row_info:dict[str,str],column_name:str,value:str,sort_row:bool=True,sort_column:bool=True):
+    if column_name in row_info:
+        raise ValueError(f"要写入的列{column_name}和row_info里的键重名")
     if not os.path.exists(csv_path):
         data=[]
     else:
@@ -35,11 +37,10 @@ def _write_csv_item(csv_path:str,row_info:dict[str,str],column_name:str,value:st
     ######## 确认前几列的header和row_info的key相同 ########
     if len(row_info)>len(header):
         raise ValueError("表头长度小于row_info长度")
-    query_row_key=[]
-    for column_id in range(len(row_info)):
-        if header[column_id] not in row_info.keys():
-            raise ValueError(f"row_info中缺少表头{header[column_id]}对应的值")
-        query_row_key.append(row_info[header[column_id]])
+    key_header=header[:len(row_info)]
+    if set(key_header)!=set(row_info):
+        raise ValueError(f"row_info的键（{','.join(row_info)}）和表头的前{len(row_info)}列（{','.join(key_header)}）不一致")
+    query_row_key=[row_info[key] for key in key_header]
     ######## 寻找正确的行 ########
     found_query_row=False
     query_row_id=1
