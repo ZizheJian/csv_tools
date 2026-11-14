@@ -1,14 +1,9 @@
-import os,csv
-from .distinguish_value import distinguish_value
-from ._write_csv_file import _write_csv_file
+from .read_csv import read_csv
+from .write_csv import write_csv
 
 # row_info是字典时同时给出列名和值，是列表时只给出值，按顺序对应表头的前几列
 def _write_csv_item(csv_path:str,row_info:dict[str,str]|list[str],column_name:str,value:str,sort_row:bool=True,sort_column:bool=True):
-    if not os.path.exists(csv_path):
-        data=[]
-    else:
-        with open(csv_path,"r",newline="",encoding="utf-8") as f:
-            data=list(csv.reader(f))
+    data=read_csv(csv_path)
     ######## row_info只给出值时，按顺序对应表头的前几列 ########
     if isinstance(row_info,list):
         if len(data)==0:
@@ -47,12 +42,5 @@ def _write_csv_item(csv_path:str,row_info:dict[str,str]|list[str],column_name:st
             data[row_id].append("")
     query_column_id=header.index(column_name,key_count)
     data[query_row_id][query_column_id]=value
-    ######## 排序 ########
-    if sort_row:
-        data[1:]=sorted(data[1:],key=lambda row:tuple(distinguish_value(item) for item in row[:key_count]))
-    if sort_column:
-        sorted_column_ids=sorted(range(key_count,len(header)),key=lambda column_id:header[column_id])
-        sorted_column_ids=list(range(key_count))+sorted_column_ids
-        data=[[row[column_id] for column_id in sorted_column_ids] for row in data]
     ######## 写出csv ########
-    _write_csv_file(csv_path,data)
+    write_csv(csv_path,data,key_count,sort_row,sort_column)

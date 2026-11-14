@@ -1,6 +1,15 @@
 import csv,os
+from .distinguish_value import distinguish_value
 
-def _write_csv_file(csv_path:str,data:list[list[str]]):
+# 前query_row_key_len列是行的标识。sort_row按标识给行排序，sort_column按列名给其余的列排序
+def write_csv(csv_path:str,data:list[list[str]],query_row_key_len:int,sort_row:bool=True,sort_column:bool=True):
+    ######## 排序 ########
+    if sort_row:
+        data=data[:1]+sorted(data[1:],key=lambda row:tuple(distinguish_value(item) for item in row[:query_row_key_len]))
+    if sort_column and len(data)>0:
+        column_ids=list(range(query_row_key_len))+sorted(range(query_row_key_len,len(data[0])),key=lambda column_id:data[0][column_id])
+        data=[[row[column_id] for column_id in column_ids] for row in data]
+    ######## 写出csv ########
     # 先写到同一目录下的临时文件，写完再替换原文件。替换是一步完成的，中途被打断时原文件保持完整
     directory,file_name=os.path.split(os.path.abspath(csv_path))
     temp_path=os.path.join(directory,f".{file_name}.{os.getpid()}.tmp")
