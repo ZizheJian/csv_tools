@@ -7,6 +7,7 @@
 ## How values are written
 
 - Rows are sorted by the leading columns: numbers come before text, numbers go from largest to smallest, and text is in alphabetical order. The remaining columns are sorted by name. Setting `sort_row` or `sort_column` to `false` turns sorting off.
+- Values can be integers, decimals or strings. In Python, NumPy integers and decimals also work. Booleans and other types raise an error.
 - Decimals keep 15 significant digits without scientific notation. For example, `1.23e-10` is written as `0.000000000123`.
 - Each write goes to a temporary file in the same directory, which then replaces the original file, so an interrupted write leaves the original file intact.
 
@@ -42,8 +43,6 @@ csv_tools::create_csv_header("result.csv","rel_eb","t");
 csv_tools::write_csv_item("result.csv",std::vector<double>{0.01,0.5},"br",3.2);
 csv_tools::write_csv_item("result.csv",std::vector<std::pair<std::string,double>>{{"rel_eb",0.01},{"t",0.5}},"psnr",62.5);
 ```
-
-Values can be integers, decimals or strings.
 
 ### Limitation
 

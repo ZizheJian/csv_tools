@@ -1,3 +1,4 @@
+import numbers
 from .change_string_type import change_string_type
 from ._write_csv_item import _write_csv_item
 
@@ -7,7 +8,7 @@ def write_csv_item(csv_path:str,row_info:dict[str,int|float|str]|list[int|float|
     if isinstance(row_info,dict):
         row_info={key:change_string_type(item) for key,item in row_info.items()}
         _write_csv_item(csv_path,row_info,column_name,value,sort_row,sort_column)
-    elif isinstance(row_info,(list,int,float,str)):
+    elif isinstance(row_info,(list,str,numbers.Real)):
         # 没有给出列名时，按顺序对应表头的前几列
         if isinstance(row_info,list):
             row_info=[change_string_type(item) for item in row_info]
