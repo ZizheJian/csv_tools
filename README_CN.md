@@ -41,8 +41,10 @@ target_link_libraries(my_target PRIVATE csv_tools)
 
 csv_tools::create_csv_header("result.csv","rel_eb","t");
 csv_tools::write_csv_item("result.csv",std::vector<double>{0.01,0.5},"br",3.2);
-csv_tools::write_csv_item("result.csv",std::vector<std::pair<std::string,double>>{{"rel_eb",0.01},{"t",0.5}},"psnr",62.5);
+csv_tools::write_csv_item("result2.csv",{{"task","tpost20"},{"rel_eb",0.01},{"trial",1}},"psnr",62.5);
 ```
+
+`row_info`同时给出列名和值时，值可以混用整数、小数和字符串。只给出值时，要混用不同类型就用`std::vector<csv_tools::csv_value>`，例如`std::vector<csv_tools::csv_value>{"tpost20",0.01,1}`。
 
 ### 限制
 
