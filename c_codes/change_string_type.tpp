@@ -27,10 +27,10 @@ namespace csv_tools
         string result;
         if(point<=0)
             result="0."+string(-point,'0')+digits;
-        else if(point>=digit_num)
-            result=digits+string(point-digit_num,'0');
-        else
+        else if(point<digit_num)
             result=digits.substr(0,point)+"."+digits.substr(point);
+        else
+            result=digits+string(point-digit_num,'0');
         if(result.find('.')!=string::npos)
         {
             while(result.back()=='0')
