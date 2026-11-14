@@ -2,6 +2,9 @@ import math
 from decimal import Decimal
 
 def change_string_type(value:int|float|str)->str:
+    # bool在Python里也算整数，和C++版一样不接受
+    if isinstance(value,bool):
+        raise TypeError(f"change_string_type只接受整数、小数和字符串，不能是{type(value).__name__}")
     if isinstance(value,float):
         if not math.isfinite(value):
             return str(value)
