@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <map>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -54,17 +53,18 @@ namespace csv_tools
         if(row_info.size()>header.size())
             throw invalid_argument("表头长度小于row_info长度");
         vector<string> key_header(header.begin(),header.begin()+row_info.size()),row_info_keys;
-        map<string,string> row_info_map;
         for(const pair<string,string> &info:row_info)
-        {
             row_info_keys.push_back(info.first);
-            row_info_map[info.first]=info.second;
-        }
         if(set<string>(key_header.begin(),key_header.end())!=set<string>(row_info_keys.begin(),row_info_keys.end()))
             throw invalid_argument("row_info的键（"+_join_with_comma(row_info_keys)+"）和表头的前"+to_string(row_info.size())+"列（"+_join_with_comma(key_header)+"）不一致");
         vector<string> query_row_key;
         for(const string &key:key_header)
-            query_row_key.push_back(row_info_map[key]);
+            for(const pair<string,string> &info:row_info)
+                if(info.first==key)
+                {
+                    query_row_key.push_back(info.second);
+                    break;
+                }
         //////// 寻找正确的行 ////////
         size_t query_row_id=1;
         while(query_row_id<data.size()&&!equal(query_row_key.begin(),query_row_key.end(),data[query_row_id].begin()))
