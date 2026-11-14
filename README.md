@@ -10,6 +10,8 @@
 - Values can be integers, decimals or strings. In Python, NumPy integers and decimals also work. Booleans and other types raise an error.
 - Decimals keep 15 significant digits without scientific notation. For example, `1.23e-10` is written as `0.000000000123`.
 - Each write goes to a temporary file in the same directory, which then replaces the original file, so an interrupted write leaves the original file intact.
+- Every write to the same file must give the same leading columns in `row_info`. The number of columns given decides how many leading columns are used to find the row, so giving one more or one fewer raises no error but writes to the wrong row.
+- Do not let several programs write the same file at the same time. Each write reads the whole table and writes it back, so when two programs write at once, one of their results may be lost.
 
 ## Python
 
@@ -48,4 +50,4 @@ When `row_info` gives column names, its values can mix integers, decimals and st
 
 ### Limitation
 
-Values written by the C++ version must not contain commas, double quotes or line breaks, and the C++ version cannot read CSV files that contain them. The Python version has no such limitation.
+Values and column names written by the C++ version must not contain commas, double quotes or line breaks, and the C++ version cannot read CSV files that contain them. The Python version has no such limitation.
