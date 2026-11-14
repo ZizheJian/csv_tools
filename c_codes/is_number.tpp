@@ -7,7 +7,7 @@
 namespace csv_tools
 {
     // 判断value是不是有限的数字，是的话把数值写入number。inf、nan和超出double范围的数当作文字
-    inline bool distinguish_value(const std::string &value,double &number)
+    inline bool is_number(const std::string &value,double &number)
     {
         using namespace std;
         // 十六进制、空格和下划线只有C++或Python一边认，和Python版一样统一当作文字
@@ -22,7 +22,7 @@ namespace csv_tools
     inline int compare_value(const std::string &str1,const std::string &str2)
     {
         double number1=0,number2=0;
-        bool is_number1=distinguish_value(str1,number1),is_number2=distinguish_value(str2,number2);
+        bool is_number1=is_number(str1,number1),is_number2=is_number(str2,number2);
         if(is_number1!=is_number2)
             return is_number1?-1:1;
         if(is_number1)

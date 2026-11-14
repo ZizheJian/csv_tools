@@ -1,11 +1,11 @@
 import csv,os
-from .distinguish_value import distinguish_value
+from .sort_key import sort_key
 
 # 前query_row_key_len列是行的标识。sort_row按标识给行排序，sort_column按列名给其余的列排序
 def write_csv(csv_path:str,data:list[list[str]],query_row_key_len:int,sort_row:bool=True,sort_column:bool=True):
     ######## 排序 ########
     if sort_row:
-        data=data[:1]+sorted(data[1:],key=lambda row:tuple(distinguish_value(item) for item in row[:query_row_key_len]))
+        data=data[:1]+sorted(data[1:],key=lambda row:tuple(sort_key(item) for item in row[:query_row_key_len]))
     if sort_column and len(data)>0:
         column_ids=list(range(query_row_key_len))+sorted(range(query_row_key_len,len(data[0])),key=lambda column_id:data[0][column_id])
         data=[[row[column_id] for column_id in column_ids] for row in data]

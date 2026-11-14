@@ -10,7 +10,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <vector>
-#include "distinguish_value.tpp"
+#include "is_number.tpp"
 
 namespace csv_tools
 {
