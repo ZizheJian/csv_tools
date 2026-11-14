@@ -6,11 +6,12 @@
 
 namespace csv_tools
 {
-    // 判断value是不是有限的数字，是的话把数值写入number。和Python版一样，inf和nan当作文字
+    // 判断value是不是有限的数字，是的话把数值写入number。inf、nan和超出double范围的数当作文字
     inline bool distinguish_value(const std::string &value,double &number)
     {
         using namespace std;
-        if(value.empty()||value.find_first_of("xX")!=string::npos)
+        // 十六进制、空格和下划线只有C++或Python一边认，和Python版一样统一当作文字
+        if(value.find_first_of("xX_ \t\n\v\f\r")!=string::npos)
             return false;
         char *end=nullptr;
         number=strtod(value.c_str(),&end);
