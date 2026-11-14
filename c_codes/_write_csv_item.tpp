@@ -4,6 +4,7 @@
 #include <set>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 #include "read_csv.tpp"
@@ -11,12 +12,27 @@
 
 namespace csv_tools
 {
-inline void _write_csv_item(const std::string &csv_path,const std::vector<std::pair<std::string,std::string>> &row_info,const std::string &column_name,const std::string &value,bool sort_row=true,bool sort_column=true)
+// row_info是vector<pair<string,string>>时同时给出列名和值，是vector<string>时只给出值，按顺序对应表头的前几列
+template<typename RowInfo>
+void _write_csv_item(const std::string &csv_path,const RowInfo &input_row_info,const std::string &column_name,const std::string &value,bool sort_row=true,bool sort_column=true)
 {
     using namespace std;
+    vector<vector<string>> data=read_csv(csv_path);
+    //////// row_info只给出值时，按顺序对应表头的前几列 ////////
+    vector<pair<string,string>> row_info;
+    if constexpr(is_same_v<RowInfo,vector<string>>)
+    {
+        if(data.empty())
+            throw invalid_argument(csv_path+"不存在或为空，并且row_info没有给出列名");
+        if(data[0].size()<input_row_info.size())
+            throw invalid_argument(csv_path+"表头长度小于row_info长度");
+        for(size_t column_id=0;column_id<input_row_info.size();column_id++)
+            row_info.emplace_back(data[0][column_id],input_row_info[column_id]);
+    }
+    else
+        row_info=input_row_info;
     if(any_of(row_info.begin(),row_info.end(),[&](const pair<string,string> &info){return info.first==column_name;}))
         throw invalid_argument("要写入的列"+column_name+"和row_info里的键重名");
-    vector<vector<string>> data=read_csv(csv_path);
     if(data.empty())
     {
         data.push_back(vector<string>());
@@ -67,20 +83,5 @@ inline void _write_csv_item(const std::string &csv_path,const std::vector<std::p
     data[query_row_id][query_column_id]=value;
     //////// 写出csv ////////
     write_csv(csv_path,data,query_row_key.size(),sort_row,sort_column);
-}
-
-// row_info只给出值时，按顺序对应表头的前几列
-inline void _write_csv_item_uncertain_row_info_keys(const std::string &csv_path,const std::vector<std::string> &row_info,const std::string &column_name,const std::string &value,bool sort_row=true,bool sort_column=true)
-{
-    using namespace std;
-    vector<vector<string>> data=read_csv(csv_path);
-    if(data.empty())
-        throw invalid_argument(csv_path+"为空，并且row_info没有key");
-    if(data[0].size()<row_info.size())
-        throw invalid_argument(csv_path+"表头长度小于row_info长度");
-    vector<pair<string,string>> row_info_pairs;
-    for(size_t column_id=0;column_id<row_info.size();column_id++)
-        row_info_pairs.emplace_back(data[0][column_id],row_info[column_id]);
-    _write_csv_item(csv_path,row_info_pairs,column_name,value,sort_row,sort_column);
 }
 }
