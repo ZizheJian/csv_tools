@@ -24,7 +24,7 @@ write_csv_item("result2.csv",[0.01,0.5],"br",3.2)
 ```
 
 - `row_info`是字典时，同时给出列名和值。
-- `row_info`是列表或单个值时，按顺序对应表头的前几列，这时文件必须已经有表头，可以先用`create_csv_header`创建。文件已经存在时，`create_csv_header`什么都不做。
+- `row_info`是列表或单个值时，按顺序对应表头的前几列，这时文件必须已经有表头，可以先用`create_csv_header`创建。文件已经有表头时，`create_csv_header`会检查表头的前几列和给出的是否一致，不一致就报错。
 
 ## C++
 

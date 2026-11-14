@@ -24,7 +24,7 @@ write_csv_item("result2.csv",[0.01,0.5],"br",3.2)
 ```
 
 - When `row_info` is a dictionary, it gives both the column names and the values.
-- When `row_info` is a list or a single value, its items match the leading header columns in order, so the file must already have a header. `create_csv_header` creates one and does nothing when the file already exists.
+- When `row_info` is a list or a single value, its items match the leading header columns in order, so the file must already have a header. `create_csv_header` creates one. When the file already has a header, `create_csv_header` checks that its leading columns match the given header and raises an error if they differ.
 
 ## C++
 

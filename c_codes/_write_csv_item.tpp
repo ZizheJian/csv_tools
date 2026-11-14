@@ -7,6 +7,7 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
+#include "_join_with_comma.tpp"
 #include "read_csv.tpp"
 #include "write_csv.tpp"
 
@@ -54,10 +55,7 @@ void _write_csv_item(const std::string &csv_path,const RowInfo &input_row_info,c
     for(const pair<string,string> &info:row_info)
         row_info_keys.push_back(info.first);
     if(set<string>(key_header.begin(),key_header.end())!=set<string>(row_info_keys.begin(),row_info_keys.end()))
-    {
-        auto join=[](const vector<string> &names){string text;for(size_t i=0;i<names.size();i++)text+=(i?",":"")+names[i];return text;};
-        throw invalid_argument("row_info的键（"+join(row_info_keys)+"）和表头的前"+to_string(row_info.size())+"列（"+join(key_header)+"）不一致");
-    }
+        throw invalid_argument("row_info的键（"+_join_with_comma(row_info_keys)+"）和表头的前"+to_string(row_info.size())+"列（"+_join_with_comma(key_header)+"）不一致");
     vector<string> query_row_key;
     for(const string &key:key_header)
         query_row_key.push_back(find_if(row_info.begin(),row_info.end(),[&](const pair<string,string> &info){return info.first==key;})->second);
